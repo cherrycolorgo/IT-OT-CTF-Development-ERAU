@@ -1,0 +1,269 @@
+================================================================================
+ AGV SECURITY CHALLENGE MODULE — Ver1.0
+================================================================================
+
+Challenge Flow: recon → discovery → execution → impact → debrief.
+
+Challenge has been developed based on the following ... 
+Target Audience is mixed 
+	- students
+	- IT security
+	- executives
+
+================================================================================
+ CHALLENGE STRUCTURE AT A GLANCE
+================================================================================
+
+  Phases       Challenges   Points   Theme
+  ──────────────────────────────────────────────────────
+  1. OSINT          1–3      xxx    Reconnaissance before touching anything
+  2. Discovery      4–5      xxx    Enumerate the live environment
+  3. Execution      6–8      xxx    Perform the actual cmd_vel injection
+  4. Impact         9–10     xxx    Understand real-world consequences
+  5. Debrief       11–13     xxx    CVSS, ATT&CK mapping, detection, reflect
+  ──────────────────────────────────────────────────────
+  TOTAL            13      xxx
+
+================================================================================
+ PHASE 1 — OSINT & RECONNAISSANCE
+================================================================================
+
+--------------------------------------------------------------------------------
+ #1 | AGV BASCIS
+ Category : OSINT
+ Points   : xxx
+ MITRE    : T0882 — Gather Victim Identity Information
+--------------------------------------------------------------------------------
+
+SCENARIO
+A warehouse facility has deployed an AGV fleet. You have not touched their
+network yet. Your only tool is the open internet.
+
+TASK
+Using only publicly available information, identify the robotics middleware used 
+by AGV(robots).
+
+--------------------------------------------------------------------------------
+ #2 | EXPOSED BY DEFAULT
+ Category : OSINT (Censys)
+ Points   : xxx
+ MITRE    : T0888 — Network Scanning
+--------------------------------------------------------------------------------
+
+SCENARIO
+Before attacking a system, threat actors scan the internet for exposed
+infrastructure. 
+
+TASK
+What port does ROS and its related services use?
+
+--------------------------------------------------------------------------------
+ #3 | CVE HUNT
+ Category : OSINT — Vulnerability Research
+ Points   : xxx
+ MITRE    : T0890 — Vulnerability Scanning
+--------------------------------------------------------------------------------
+
+SCENARIO
+Before exploiting a system, attackers research known vulnerabilities.
+
+TASK
+Search for a CVE affecting ROS with a CVSS v3 base score of 7.0 or 
+higher. Submit the CVE ID as the flag.
+
+
+HINT
+Use NVD
+
+
+================================================================================
+ PHASE 2 — DISCOVERY
+================================================================================
+
+NOTE: Interact with WS1 and WS2 via localhost:6080 & 6081
+
+When accessing the two workstations, users must manually initialize ROS before 
+proceeding. Run the following command on each workstation:
+	source /opt/ros/noetic/setup.bash
+	roscore
+
+--------------------------------------------------------------------------------
+ #4 | ENUMERATE THE MASTER
+ Category : Discovery
+ Points   : xxx
+ MITRE    : T0840 — Network Service Scanning
+--------------------------------------------------------------------------------
+
+SCENARIO
+You now have access to the engineering workstation. 
+
+TASK
+Using ROS CLI tool, enumerate the full attack surface:
+
+--------------------------------------------------------------------------------
+ #5 | WHAT IS THE ROBOT DOING?
+ Category : Discovery
+ Points   : xxx
+ MITRE    : T0840 — Remote System Information Discovery
+--------------------------------------------------------------------------------
+
+SCENARIO
+A robot is inside the warehouse. Before injecting commands,
+you need to understand what normal looks like.
+
+TASK
+Identify how the robot is controlled. What velocity commands does it take?
+
+================================================================================
+ PHASE 3 — EXECUTION & ATTACK
+================================================================================
+
+--------------------------------------------------------------------------------
+ #6 | FIRST INJECTION
+ Category : Execution
+ Points   : xxx
+ MITRE    : T0855 — Command-Line Interface
+--------------------------------------------------------------------------------
+
+SCENARIO
+You now know how the robot operates. Time to inject. You are going to override 
+it.
+
+TASK
+Publish a cmd_vel command that drives the TurtleBot3 forward at 0.2 m/s
+with no rotation. Observe the robot moving in WS Gazebo.
+
+--------------------------------------------------------------------------------
+ #7 | MAKE IT SPIN!
+ Category : Execution — Manipulate Control
+ Points   : xxx
+ MITRE    : T0831
+--------------------------------------------------------------------------------
+
+SCENARIO
+Rogue AGV. 
+
+TASK
+Publish command to the TurtleBot to SPIN in place infinitely at max speed!
+
+--------------------------------------------------------------------------------
+ #8 | DENIAL OF MOVEMENT
+ Category : Impair Process Control
+ Points   : xxx
+ MITRE    : T0836 — Denial of Control
+--------------------------------------------------------------------------------
+
+SCENARIO
+You do not always need to move the robot dangerously. Sometimes the attack
+is simply preventing the robot from moving at all, a Denial of Control.
+
+TASK
+Flood /cmd_vel with zero-velocity commands at 20Hz for 30 seconds.
+
+================================================================================
+ PHASE 4 — IMPACT ANALYSIS
+================================================================================
+
+--------------------------------------------------------------------------------
+ #9 | WHAT COULD GO WRONG?
+ Category : Impact Analysis
+ Points   : xxx
+ MITRE    : T0879 — Damage to Property
+--------------------------------------------------------------------------------
+
+SCENARIO
+You have demonstrated cmd_vel injection on a single robot. Now scale that
+thinking to a real warehouse fleet.
+
+TASK
+Analyze your attacks and list possible operational and safety impacts if an
+attacker were able to inject malicious cmd_vel commands across multiple AGVs
+in a warehouse environment.
+
+Consider effects on:
+	Worker safety
+	Physical infrastructure
+	Inventory and logistics operations
+	System availability
+	Business operations
+
+--------------------------------------------------------------------------------
+ #10 | SAFETY SYSTEM OR SECURITY SYSTEM?
+ Category : Impact Analysis
+ Points   : xxx
+ MITRE    : T0838 — Modify Control Logic
+--------------------------------------------------------------------------------
+
+SCENARIO
+Physical safety systems (emergency stops, collision sensors, geofencing)
+are the last line of defence against software attacks. But they are not
+immune. The TRITON/TRISIS attack (2017) specifically targeted safety systems.
+
+TASK
+Research and answer:
+  (a) Name the 2017 ICS attack that targeted Safety Instrumented Systems.
+      What was the facility type and what was the attacker's goal?
+
+  (b) Which MITRE ATT&CK ICS technique covers modifying safety system logic?
+      Provide the technique ID and name.
+
+  (c) In the Purdue Model, what level do Safety Instrumented Systems occupy
+      and why must they be isolated from IT networks?
+
+================================================================================
+ PHASE 5 — CVSS SCORING & MITRE ATT&CK DEBRIEF
+================================================================================
+
+--------------------------------------------------------------------------------
+ #11 | SCORE THE VULNERABILITY
+ Category : CVSS Debrief
+ Points   : xxx
+ MITRE    : N/A — CVSS v3.1 exercise
+--------------------------------------------------------------------------------
+
+SCENARIO
+Every published vulnerability has a CVSS score. The cmd_vel injection
+vulnerability you exploited has never been formally scored — until now.
+Your job is to score it using the CVSS v3.1 calculator.
+
+  Calculator: nvd.nist.gov/vuln-metrics/cvss/v3-calculator
+
+TASK
+Score the ROS /cmd_vel unauthenticated injection vulnerability.
+Justify each of the 8 base metrics. Submit the CVSS vector string.
+
+--------------------------------------------------------------------------------
+ #12 | PATCH THE GAP
+ Category : MITRE Debrief — Mitigations
+ Points   : xxx
+ MITRE    : M0810 / M0930 / M0926
+--------------------------------------------------------------------------------
+
+SCENARIO
+Knowing how to attack is only half the job. A security professional must
+also know how to defend. MITRE ATT&CK ICS includes a mitigations layer.
+
+TASK
+For the cmd_vel injection vulnerability, propose remediations across
+four layers. For each layer, cite the relevant MITRE mitigation ID:
+
+  Layer 1 — Network controls
+  Layer 2 — ROS authentication (compare ROS 1 vs ROS 2)
+  Layer 3 — Monitoring and detection
+  Layer 4 — Physical safety fallback (hardware independent of software)
+
+--------------------------------------------------------------------------------
+ #13 | EXECUTIVE BRIEF
+ Category : Debrief — Communication
+ Points   : xxx
+--------------------------------------------------------------------------------
+
+SCENARIO
+You need to brief a non-technical executive on this vulnerability.
+
+TASK
+Create an one page report for a non-technical executive. 
+
+================================================================================
+ END
+================================================================================

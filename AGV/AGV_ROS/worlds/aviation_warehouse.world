@@ -1,0 +1,265 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="aviation_warehouse">
+
+    <!-- ── Lighting ── -->
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 20 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <light name="ceiling_light_1" type="point">
+      <pose>0 0 5.5 0 0 0</pose>
+      <diffuse>1 1 0.95 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation><range>20</range><linear>0.05</linear></attenuation>
+    </light>
+
+    <light name="ceiling_light_2" type="point">
+      <pose>10 0 5.5 0 0 0</pose>
+      <diffuse>1 1 0.95 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation><range>20</range><linear>0.05</linear></attenuation>
+    </light>
+
+    <light name="ceiling_light_3" type="point">
+      <pose>-10 0 5.5 0 0 0</pose>
+      <diffuse>1 1 0.95 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation><range>20</range><linear>0.05</linear></attenuation>
+    </light>
+
+    <!-- ── Physics ── -->
+    <physics type="ode">
+      <real_time_update_rate>1000</real_time_update_rate>
+      <max_step_size>0.001</max_step_size>
+    </physics>
+
+    <!-- ── Ground plane ── -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry><plane><normal>0 0 1</normal><size>60 40</size></plane></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><plane><normal>0 0 1</normal><size>60 40</size></plane></geometry>
+          <material>
+            <ambient>0.4 0.4 0.4 1</ambient>
+            <diffuse>0.5 0.5 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ══════════════════════════════════════
+         WAREHOUSE OUTER WALLS  (25 m × 18 m)
+         ══════════════════════════════════════ -->
+
+    <!-- North wall -->
+    <model name="wall_north">
+      <static>true</static>
+      <pose>0 9 1.5 0 0 0</pose>
+      <link name="link">
+        <collision name="c"><geometry><box><size>25 0.2 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>25 0.2 3</size></box></geometry>
+          <material><ambient>0.7 0.7 0.7 1</ambient><diffuse>0.8 0.8 0.8 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- South wall -->
+    <model name="wall_south">
+      <static>true</static>
+      <pose>0 -9 1.5 0 0 0</pose>
+      <link name="link">
+        <collision name="c"><geometry><box><size>25 0.2 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>25 0.2 3</size></box></geometry>
+          <material><ambient>0.7 0.7 0.7 1</ambient><diffuse>0.8 0.8 0.8 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- East wall -->
+    <model name="wall_east">
+      <static>true</static>
+      <pose>12.5 0 1.5 0 0 0</pose>
+      <link name="link">
+        <collision name="c"><geometry><box><size>0.2 18 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.2 18 3</size></box></geometry>
+          <material><ambient>0.7 0.7 0.7 1</ambient><diffuse>0.8 0.8 0.8 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- West wall -->
+    <model name="wall_west">
+      <static>true</static>
+      <pose>-12.5 0 1.5 0 0 0</pose>
+      <link name="link">
+        <collision name="c"><geometry><box><size>0.2 18 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.2 18 3</size></box></geometry>
+          <material><ambient>0.7 0.7 0.7 1</ambient><diffuse>0.8 0.8 0.8 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ══════════════════════════════════════
+         SHELVING ROWS  (6 rows × 4 bays each)
+         Rows run East–West.  3 aisles between them.
+         Row Y positions: ±6, ±3.5, ±1  (pairs)
+         Aisle widths ~2 m each.
+         ══════════════════════════════════════ -->
+
+    <!-- Helper macro: each shelf bay = 2 m wide, 0.4 m deep, 1.8 m tall -->
+    <!-- Row A  (y=+6.5) -->
+    <model name="shelf_A1"><static>true</static><pose>-9  6.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.6 0.45 0.2 1</ambient><diffuse>0.7 0.55 0.25 1</diffuse></material></visual></link></model>
+    <model name="shelf_A2"><static>true</static><pose>-5  6.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.6 0.45 0.2 1</ambient><diffuse>0.7 0.55 0.25 1</diffuse></material></visual></link></model>
+    <model name="shelf_A3"><static>true</static><pose>-1  6.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.6 0.45 0.2 1</ambient><diffuse>0.7 0.55 0.25 1</diffuse></material></visual></link></model>
+    <model name="shelf_A4"><static>true</static><pose> 3  6.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.6 0.45 0.2 1</ambient><diffuse>0.7 0.55 0.25 1</diffuse></material></visual></link></model>
+    <model name="shelf_A5"><static>true</static><pose> 7  6.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.6 0.45 0.2 1</ambient><diffuse>0.7 0.55 0.25 1</diffuse></material></visual></link></model>
+
+    <!-- Row B  (y=+4.5, back-to-back with A across aisle) -->
+    <model name="shelf_B1"><static>true</static><pose>-9  4.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.6 0.45 0.2 1</ambient><diffuse>0.7 0.55 0.25 1</diffuse></material></visual></link></model>
+    <model name="shelf_B2"><static>true</static><pose>-5  4.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.6 0.45 0.2 1</ambient><diffuse>0.7 0.55 0.25 1</diffuse></material></visual></link></model>
+    <model name="shelf_B3"><static>true</static><pose>-1  4.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.6 0.45 0.2 1</ambient><diffuse>0.7 0.55 0.25 1</diffuse></material></visual></link></model>
+    <model name="shelf_B4"><static>true</static><pose> 3  4.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.6 0.45 0.2 1</ambient><diffuse>0.7 0.55 0.25 1</diffuse></material></visual></link></model>
+    <model name="shelf_B5"><static>true</static><pose> 7  4.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.6 0.45 0.2 1</ambient><diffuse>0.7 0.55 0.25 1</diffuse></material></visual></link></model>
+
+    <!-- Row C  (y=+1.5) -->
+    <model name="shelf_C1"><static>true</static><pose>-9  1.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.2 0.4 0.6 1</ambient><diffuse>0.25 0.5 0.7 1</diffuse></material></visual></link></model>
+    <model name="shelf_C2"><static>true</static><pose>-5  1.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.2 0.4 0.6 1</ambient><diffuse>0.25 0.5 0.7 1</diffuse></material></visual></link></model>
+    <model name="shelf_C3"><static>true</static><pose>-1  1.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.2 0.4 0.6 1</ambient><diffuse>0.25 0.5 0.7 1</diffuse></material></visual></link></model>
+    <model name="shelf_C4"><static>true</static><pose> 3  1.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.2 0.4 0.6 1</ambient><diffuse>0.25 0.5 0.7 1</diffuse></material></visual></link></model>
+    <model name="shelf_C5"><static>true</static><pose> 7  1.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.2 0.4 0.6 1</ambient><diffuse>0.25 0.5 0.7 1</diffuse></material></visual></link></model>
+
+    <!-- Row D  (y=-1.5) -->
+    <model name="shelf_D1"><static>true</static><pose>-9 -1.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.2 0.4 0.6 1</ambient><diffuse>0.25 0.5 0.7 1</diffuse></material></visual></link></model>
+    <model name="shelf_D2"><static>true</static><pose>-5 -1.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.2 0.4 0.6 1</ambient><diffuse>0.25 0.5 0.7 1</diffuse></material></visual></link></model>
+    <model name="shelf_D3"><static>true</static><pose>-1 -1.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.2 0.4 0.6 1</ambient><diffuse>0.25 0.5 0.7 1</diffuse></material></visual></link></model>
+    <model name="shelf_D4"><static>true</static><pose> 3 -1.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.2 0.4 0.6 1</ambient><diffuse>0.25 0.5 0.7 1</diffuse></material></visual></link></model>
+    <model name="shelf_D5"><static>true</static><pose> 7 -1.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.2 0.4 0.6 1</ambient><diffuse>0.25 0.5 0.7 1</diffuse></material></visual></link></model>
+
+    <!-- Row E  (y=-4.5) -->
+    <model name="shelf_E1"><static>true</static><pose>-9 -4.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.5 0.2 0.2 1</ambient><diffuse>0.65 0.25 0.25 1</diffuse></material></visual></link></model>
+    <model name="shelf_E2"><static>true</static><pose>-5 -4.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.5 0.2 0.2 1</ambient><diffuse>0.65 0.25 0.25 1</diffuse></material></visual></link></model>
+    <model name="shelf_E3"><static>true</static><pose>-1 -4.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.5 0.2 0.2 1</ambient><diffuse>0.65 0.25 0.25 1</diffuse></material></visual></link></model>
+    <model name="shelf_E4"><static>true</static><pose> 3 -4.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.5 0.2 0.2 1</ambient><diffuse>0.65 0.25 0.25 1</diffuse></material></visual></link></model>
+    <model name="shelf_E5"><static>true</static><pose> 7 -4.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.5 0.2 0.2 1</ambient><diffuse>0.65 0.25 0.25 1</diffuse></material></visual></link></model>
+
+    <!-- Row F  (y=-6.5) -->
+    <model name="shelf_F1"><static>true</static><pose>-9 -6.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.5 0.2 0.2 1</ambient><diffuse>0.65 0.25 0.25 1</diffuse></material></visual></link></model>
+    <model name="shelf_F2"><static>true</static><pose>-5 -6.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.5 0.2 0.2 1</ambient><diffuse>0.65 0.25 0.25 1</diffuse></material></visual></link></model>
+    <model name="shelf_F3"><static>true</static><pose>-1 -6.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.5 0.2 0.2 1</ambient><diffuse>0.65 0.25 0.25 1</diffuse></material></visual></link></model>
+    <model name="shelf_F4"><static>true</static><pose> 3 -6.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.5 0.2 0.2 1</ambient><diffuse>0.65 0.25 0.25 1</diffuse></material></visual></link></model>
+    <model name="shelf_F5"><static>true</static><pose> 7 -6.5 0.9 0 0 0</pose>
+      <link name="l"><collision name="c"><geometry><box><size>2 0.4 1.8</size></box></geometry></collision>
+      <visual name="v"><geometry><box><size>2 0.4 1.8</size></box></geometry>
+        <material><ambient>0.5 0.2 0.2 1</ambient><diffuse>0.65 0.25 0.25 1</diffuse></material></visual></link></model>
+
+    <!-- ══════════════════════════════════════
+         SPAWN POINT marker (yellow pad at 0,0)
+         ══════════════════════════════════════ -->
+    <model name="spawn_marker">
+      <static>true</static>
+      <pose>0 0 0.01 0 0 0</pose>
+      <link name="link">
+        <visual name="v">
+          <geometry><box><size>0.5 0.5 0.01</size></box></geometry>
+          <material><ambient>1 0.9 0 1</ambient><diffuse>1 0.9 0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>

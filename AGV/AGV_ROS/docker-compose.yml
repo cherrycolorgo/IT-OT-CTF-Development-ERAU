@@ -1,0 +1,13 @@
+services:
+  workstation:
+    build: .
+    container_name: ros_ctf
+    hostname: ros_ctf
+    environment:
+      - DISPLAY=:1
+      - VNC_RESOLUTION=1280x720
+      - ROS_MASTER_URI=http://localhost:11311
+      - ROS_IP=127.0.0.1
+      - TURTLEBOT3_MODEL=burger
+    ports:
+      - "6080:6080"   # noVNC  →  http://localhost:6080/vnc.html

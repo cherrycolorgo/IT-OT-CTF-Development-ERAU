@@ -1,0 +1,38 @@
+services:
+  ws_master:
+    build: .
+    container_name: ws_master
+    hostname: ws_master
+    environment:
+      - DISPLAY=:1
+      - VNC_RESOLUTION=1280x720
+      - ROS_MASTER_URI=http://ws_master:11311
+      - ROS_IP=ws_master
+      - ROLE=master
+    ports:
+      - "6080:6080"   # noVNC web
+    networks:
+      - rosnet
+
+  ws_sim:
+    build: .
+    container_name: ws_sim
+    hostname: ws_sim
+    environment:
+      - DISPLAY=:1
+      - VNC_RESOLUTION=1280x720
+      - ROS_MASTER_URI=http://ws_master:11311
+      - ROS_IP=ws_sim
+      - ROLE=sim
+      - TURTLEBOT3_MODEL=burger
+    ports:
+      - "6081:6080"   # noVNC web
+    networks:
+      - rosnet
+    depends_on:
+      - ws_master
+
+networks:
+  rosnet:
+    driver: bridge
+

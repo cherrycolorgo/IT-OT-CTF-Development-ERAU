@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>aviation_warehouse</name>
+  <version>0.1.0</version>
+  <description>Simple aviation warehouse world with aisles for ROS/Gazebo learning CTF.</description>
+  <maintainer email="ctf@example.com">CTF Admin</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>turtlebot3_description</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>xacro</exec_depend>
+</package>
